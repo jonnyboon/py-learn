@@ -13,7 +13,7 @@ def main():
 
     print("Connection to server stablished on ", SRV_ADDR, " ", SRV_PORT)
 
-    message = input("What is your message?")
+    message = input("What is your message? ")
 
     s.sendall(message.encode())
     s.close()
