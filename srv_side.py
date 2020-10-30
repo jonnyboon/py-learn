@@ -1,6 +1,7 @@
+'''TCP Server with low level programming'''
+
+
 import socket
-
-
 
 
 def main():
