@@ -20,6 +20,7 @@ def main():
     while 1:
         data = connection.recv(1024)
         if not data: break
+        
         connection.sendall(b'--Msg received --\n')
         print(data.decode('utf-8'))
     connection.close()
