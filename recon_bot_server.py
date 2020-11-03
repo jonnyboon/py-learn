@@ -14,7 +14,7 @@ def main():
         sock.listen(1)
         conn, addr = sock.accept()
         with conn:
-            print('Connected by', addr)
+            print('Connected to ', addr)
             while True:
                 try:
                     data = conn.recv(1024)

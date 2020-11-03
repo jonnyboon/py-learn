@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"istream": "cpp",
+			"iostream": "cpp",
+			"iterator": "cpp"
+		}
+	}
+}
