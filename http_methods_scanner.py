@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import socket
 from http import client
 import argparse
@@ -25,13 +27,14 @@ def chk_ressource(host,port,request_type, path, headers):
     try:
         chk = client.HTTPConnection(host,port)
         chk.request(request_type,path,body, headers=headers)
-        print (f"[*] *** Sending ", request_type," to ", host," ",port)
         resp = chk.getresponse()
         if resp.status == 200:
             print(f"{StatColours.OKGREEN}[+] {StatColours.ENDC}", request_type, \
                 " : ", " ", host," ",port, " ***")      
             #print(resp.getheaders())
-            return "success"            
+            return "success"
+        else:
+            return None
     except Exception as e:
         print("Request failed due to: ", e)
 
@@ -52,7 +55,7 @@ def main():
     request_type = args.http_request_type
     path = '/admin.php'
     headers = {}
-    headers ["Authorization"] = "Basic MTIzNDphYmNkZWY="
+    headers ["Authorization"] = b"Basic WmFjazpNYW5hZ2VtZW50="
 
     #body = ''
   

